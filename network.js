@@ -59,4 +59,26 @@ export class Network {
         }
         fs.writeFileSync(file, JSON.stringify(data));
     }
+
+    train(dataset, epochs) {
+        // run, log accuracy, no learning yet
+        let overallAcc = 0;
+        for(var e = 0; e<=epochs; e++) {
+            let acc = 0;
+            for(var i = 0; i<dataset.length; i++) {
+                let output = this.run(dataset[i].input);
+                if(output == dataset[i].output) {
+                    acc++;
+                }
+            }
+            console.log("Epoch " + e + " Accuracy: " + acc/dataset.length);
+            overallAcc += acc/dataset.length;
+        }
+        console.log("Overall Accuracy: " + overallAcc/epochs);
+        return overallAcc/epochs;
+    }
+
+    learn(dataset, epochs) {
+        
+    }
 }
