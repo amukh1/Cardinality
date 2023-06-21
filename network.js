@@ -1,3 +1,5 @@
+import { generateKey } from "crypto";
+import { gradient } from "./calculus.js";
 import { Matrix, Vector } from "./linear.js";
 import fs from "fs";
 
@@ -79,6 +81,28 @@ export class Network {
     }
 
     learn(dataset, epochs) {
-        
+        for(var e = 0; e<=epochs; e++) {
+            for(var i = 0; i<dataset.length; i++) {
+                let genLoss = () => {    
+                    // calculate loss
+                    let output = this.run(dataset[i].input);
+                    let loss = Math.pow(dataset[i].output - output, 2);
+                    return loss;
+                }
+
+                let localLoss = (weights, biases) => {
+                    // make network with new weights and biases
+                    let newNet = new Network(this.shape, this.activations);
+                    newNet.weights = weights;
+                    newNet.biases = biases;
+                    // calculate loss
+                    let output = newNet.run(dataset[i].input);
+                    let loss = Math.pow(dataset[i].output - output, 2);
+                    return loss;
+                }
+                console.log(genLoss());
+                // console.log(localLoss(this.weights, this.biases));
+            }
+        }
     }
 }
